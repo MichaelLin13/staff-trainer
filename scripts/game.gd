@@ -5,13 +5,14 @@ const NOTE_NAMES := ["Do", "Re", "Mi", "Fa", "So", "La", "Si"]
 const TARGET_SCORE := 10
 const COLOR_CORRECT := Color("#4caf50")
 const COLOR_WRONG := Color("#e05a5a")
-const DELAY_CORRECT := 0.7
+const DELAY_CORRECT := 1.0
 const DELAY_WRONG := 1.5
 const DELAY_FINISH := 2.0
 
 @onready var score_label: Label = %ScoreLabel
 @onready var score_bar: ProgressBar = %ScoreBar
 @onready var staff: StaffView = %StaffView
+@onready var piano: PianoView = %PianoView
 @onready var feedback_label: Label = %FeedbackLabel
 @onready var back_button: Button = %BackButton
 @onready var next_timer: Timer = %NextTimer
@@ -19,6 +20,7 @@ const DELAY_FINISH := 2.0
 
 var score := 0
 var _correct_index := -1
+var _current_step := 0
 var _last_key := ""
 var _finished := false
 
@@ -63,6 +65,12 @@ func _next_question() -> void:
 			break
 	_last_key = key
 	staff.show_note(clef, step, dur)
+	_current_step = step
+	# 鍵盤提示：開啟時出題就標示，否則答題後才標示
+	if GameSettings.show_key_hint:
+		piano.set_marker(step)
+	else:
+		piano.clear_marker()
 
 	# 選項：1 個正確 + 2 個干擾（音名或音符種類不同）
 	var correct := [step % 7, dur]
@@ -91,6 +99,7 @@ func _on_answer_pressed(index: int) -> void:
 	for b in answer_buttons:
 		b.disabled = true
 	_tint(answer_buttons[_correct_index], COLOR_CORRECT)
+	piano.set_marker(_current_step)
 
 	var delay := DELAY_CORRECT
 	if index == _correct_index:
