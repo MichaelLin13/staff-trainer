@@ -5,7 +5,7 @@ extends Control
 @onready var bass_check: CheckBox = %BassCheck
 @onready var octave_option: OptionButton = %OctaveOption
 @onready var range_label: Label = %RangeLabel
-@onready var duration_checks: Array[CheckBox] = [%WholeCheck, %HalfCheck, %QuarterCheck]
+@onready var duration_checks: Array[CheckBox] = [%WholeCheck, %HalfCheck, %QuarterCheck, %EighthCheck, %SixteenthCheck]
 @onready var hint_label: Label = %HintLabel
 @onready var back_button: Button = %BackButton
 
