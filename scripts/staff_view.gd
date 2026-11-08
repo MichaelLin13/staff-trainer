@@ -11,6 +11,10 @@ const GLYPH_F_CLEF := "\uE062"
 const GLYPH_WHOLE := "\uE0A2"
 const GLYPH_HALF := "\uE0A3"
 const GLYPH_BLACK := "\uE0A4"
+const GLYPH_FLAG_8TH_UP := "\uE240"
+const GLYPH_FLAG_8TH_DOWN := "\uE241"
+const GLYPH_FLAG_16TH_UP := "\uE242"
+const GLYPH_FLAG_16TH_DOWN := "\uE243"
 
 # 符頭寬度（單位：線間距，來自 Bravura 字型資料）
 const WIDTH_WHOLE := 1.688
@@ -18,6 +22,7 @@ const WIDTH_HALF := 1.18
 const STEM_ATTACH_Y := 0.168
 const STEM_THICKNESS := 0.12
 const STEM_LENGTH := 3.5
+const STEM_LENGTH_16TH := 4.0
 
 # 五線譜最下面那條線的音高 (step)
 # 高音譜第一線 = E4 = 4*7+2 = 30；低音譜第一線 = G2 = 2*7+4 = 18
@@ -25,7 +30,7 @@ const BOTTOM_LINE_STEP := {0: 30, 1: 18}
 
 var clef := 0          # GameSettings.TREBLE / BASS
 var step := 28         # 音高
-var duration := 0      # GameSettings.WHOLE / HALF / QUARTER
+var duration := 0      # 0 全 / 1 2分 / 2 4分 / 3 8分 / 4 16分
 var ink_color := Color.BLACK
 
 # 畫面要容納的上下範圍（單位：半格，0 = 第一線，8 = 第五線）
@@ -109,21 +114,35 @@ func _draw() -> void:
 	var glyph := GLYPH_WHOLE
 	if duration == 1:
 		glyph = GLYPH_HALF
-	elif duration == 2:
+	elif duration >= 2:
 		glyph = GLYPH_BLACK
 	draw_string(MUSIC_FONT, Vector2(head_x, note_y), glyph,
 		HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, ink_color)
 
 	# 符桿（全音符沒有）：第三線以下朝上，第三線（含）以上朝下；
-	# 離很遠時符桿延伸到第三線
+	# 離很遠時符桿延伸到第三線。8分、16分音符在符桿末端加符尾
 	if duration != 0:
 		var stem_w := STEM_THICKNESS * sp
+		var stem_len := STEM_LENGTH_16TH if duration == 4 else STEM_LENGTH
 		var middle_y := bottom_y - 2.0 * sp
-		if pos < 4:
+		var stem_left: float
+		var y_end: float
+		var up := pos < 4
+		if up:
 			var sx := head_x + head_w * sp - stem_w * 0.5
-			var y_end := minf(note_y - STEM_LENGTH * sp, middle_y)
+			y_end = minf(note_y - stem_len * sp, middle_y)
 			draw_line(Vector2(sx, note_y - STEM_ATTACH_Y * sp), Vector2(sx, y_end), ink_color, stem_w)
+			stem_left = sx - stem_w * 0.5
 		else:
 			var sx := head_x + stem_w * 0.5
-			var y_end := maxf(note_y + STEM_LENGTH * sp, middle_y)
+			y_end = maxf(note_y + stem_len * sp, middle_y)
 			draw_line(Vector2(sx, note_y + STEM_ATTACH_Y * sp), Vector2(sx, y_end), ink_color, stem_w)
+			stem_left = sx - stem_w * 0.5
+		var flag := ""
+		if duration == 3:
+			flag = GLYPH_FLAG_8TH_UP if up else GLYPH_FLAG_8TH_DOWN
+		elif duration == 4:
+			flag = GLYPH_FLAG_16TH_UP if up else GLYPH_FLAG_16TH_DOWN
+		if flag != "":
+			draw_string(MUSIC_FONT, Vector2(stem_left, y_end), flag,
+				HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, ink_color)
