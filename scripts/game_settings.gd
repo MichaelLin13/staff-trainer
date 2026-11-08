@@ -11,7 +11,9 @@ const BASS := 1
 const WHOLE := 0
 const HALF := 1
 const QUARTER := 2
-const DURATION_NAMES := ["全音符", "2分音符", "4分音符"]
+const EIGHTH := 3
+const SIXTEENTH := 4
+const DURATION_NAMES := ["全音符", "2分音符", "4分音符", "8分音符", "16分音符"]
 
 const MAX_OCTAVES := 2
 
@@ -22,7 +24,7 @@ const MIDDLE_C_STEP := 28
 var use_treble := true
 var use_bass := false
 var octaves := 0                       # 0 = 只在中央Do附近的一個八度
-var durations := [true, true, true]    # [全音符, 2分音符, 4分音符]
+var durations := [true, true, true, true, true]    # [全, 2分, 4分, 8分, 16分]
 
 
 func _ready() -> void:
@@ -75,8 +77,9 @@ func load_settings() -> void:
 	use_treble = cfg.get_value("difficulty", "use_treble", true)
 	use_bass = cfg.get_value("difficulty", "use_bass", false)
 	octaves = clampi(cfg.get_value("difficulty", "octaves", 0), 0, MAX_OCTAVES)
-	var d = cfg.get_value("difficulty", "durations", [true, true, true])
-	if d is Array and d.size() == 3:
-		durations = d.duplicate()
+	var d = cfg.get_value("difficulty", "durations", [])
+	if d is Array:
+		for i in mini(d.size(), durations.size()):
+			durations[i] = bool(d[i])
 	if not use_treble and not use_bass:
 		use_treble = true
