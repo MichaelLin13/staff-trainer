@@ -25,6 +25,7 @@ var use_treble := true
 var use_bass := false
 var octaves := 0                       # 0 = 只在中央Do附近的一個八度
 var durations := [true, true, true, true, true]    # [全, 2分, 4分, 8分, 16分]
+var show_key_hint := false             # true = 出題時就在鍵盤上標示位置
 
 
 func _ready() -> void:
@@ -67,6 +68,7 @@ func save_settings() -> void:
 	cfg.set_value("difficulty", "use_bass", use_bass)
 	cfg.set_value("difficulty", "octaves", octaves)
 	cfg.set_value("difficulty", "durations", durations)
+	cfg.set_value("difficulty", "show_key_hint", show_key_hint)
 	cfg.save(SAVE_PATH)
 
 
@@ -81,5 +83,6 @@ func load_settings() -> void:
 	if d is Array:
 		for i in mini(d.size(), durations.size()):
 			durations[i] = bool(d[i])
+	show_key_hint = cfg.get_value("difficulty", "show_key_hint", false)
 	if not use_treble and not use_bass:
 		use_treble = true
