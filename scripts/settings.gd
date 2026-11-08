@@ -6,6 +6,7 @@ extends Control
 @onready var octave_option: OptionButton = %OctaveOption
 @onready var range_label: Label = %RangeLabel
 @onready var duration_checks: Array[CheckBox] = [%WholeCheck, %HalfCheck, %QuarterCheck, %EighthCheck, %SixteenthCheck]
+@onready var key_hint_check: CheckBox = %KeyHintCheck
 @onready var hint_label: Label = %HintLabel
 @onready var back_button: Button = %BackButton
 
@@ -20,6 +21,9 @@ func _ready() -> void:
 	octave_option.select(GameSettings.octaves)
 	for i in duration_checks.size():
 		duration_checks[i].button_pressed = GameSettings.durations[i]
+
+	key_hint_check.button_pressed = GameSettings.show_key_hint
+	key_hint_check.toggled.connect(func(on: bool): GameSettings.show_key_hint = on)
 
 	treble_check.toggled.connect(_on_clef_toggled.bind(treble_check))
 	bass_check.toggled.connect(_on_clef_toggled.bind(bass_check))
