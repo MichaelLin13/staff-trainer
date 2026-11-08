@@ -88,20 +88,41 @@ theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 28
 text = "3. 音符種類"
 
-[node name="WholeCheck" type="CheckBox" parent="Margin/VBox"]
+[node name="DurationGrid" type="GridContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="WholeCheck" type="CheckBox" parent="Margin/VBox/DurationGrid"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "全音符"
 
-[node name="HalfCheck" type="CheckBox" parent="Margin/VBox"]
+[node name="HalfCheck" type="CheckBox" parent="Margin/VBox/DurationGrid"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "2分音符"
 
-[node name="QuarterCheck" type="CheckBox" parent="Margin/VBox"]
+[node name="QuarterCheck" type="CheckBox" parent="Margin/VBox/DurationGrid"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "4分音符"
+
+[node name="EighthCheck" type="CheckBox" parent="Margin/VBox/DurationGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "8分音符"
+
+[node name="SixteenthCheck" type="CheckBox" parent="Margin/VBox/DurationGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "16分音符"
 
 [node name="Spacer" type="Control" parent="Margin/VBox"]
 layout_mode = 2
