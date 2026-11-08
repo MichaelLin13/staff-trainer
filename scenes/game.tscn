@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_game"]
 [ext_resource type="Script" path="res://scripts/staff_view.gd" id="2_staff"]
+[ext_resource type="Script" path="res://scripts/piano_view.gd" id="3_piano"]
 
 [node name="Game" type="Control"]
 layout_mode = 3
@@ -75,7 +76,7 @@ horizontal_alignment = 1
 
 [node name="StaffView" type="Control" parent="Margin/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 400)
+custom_minimum_size = Vector2(0, 320)
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_staff")
@@ -95,7 +96,7 @@ theme_override_constants/separation = 20
 
 [node name="Answer1" type="Button" parent="Margin/VBox/AnswerButtons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Do
@@ -103,7 +104,7 @@ text = "Do
 
 [node name="Answer2" type="Button" parent="Margin/VBox/AnswerButtons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "La
@@ -111,11 +112,17 @@ text = "La
 
 [node name="Answer3" type="Button" parent="Margin/VBox/AnswerButtons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "So
 (全音符)"
+
+[node name="PianoView" type="Control" parent="Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+script = ExtResource("3_piano")
 
 [node name="NextTimer" type="Timer" parent="."]
 unique_name_in_owner = true
