@@ -1,0 +1,64 @@
+name: Deploy Web (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.6.1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot and Web export template
+        run: |
+          V=${GODOT_VERSION}
+          wget -q https://github.com/godotengine/godot/releases/download/${V}-stable/Godot_v${V}-stable_linux.x86_64.zip
+          unzip -q Godot_v${V}-stable_linux.x86_64.zip
+          sudo mv Godot_v${V}-stable_linux.x86_64 /usr/local/bin/godot
+          wget -q https://github.com/godotengine/godot/releases/download/${V}-stable/Godot_v${V}-stable_export_templates.tpz
+          T=~/.local/share/godot/export_templates/${V}.stable
+          mkdir -p $T
+          unzip -jq Godot_v${V}-stable_export_templates.tpz 'templates/web_nothreads_release.zip' 'templates/version.txt' -d $T
+          rm -f Godot_v${V}-stable_*
+
+      - name: Prepare fonts and icons
+        run: |
+          pip install fonttools pillow
+          python tools/prepare_assets.py
+
+      - name: Export Web build
+        run: |
+          mkdir -p "$RUNNER_TEMP/build"
+          godot --headless --path . --import || true
+          godot --headless --path . --export-release "Web" "$RUNNER_TEMP/build/index.html"
+          ls -la "$RUNNER_TEMP/build"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
