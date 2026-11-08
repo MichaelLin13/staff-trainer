@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/settings.gd" id="1_settings"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_settings")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.953, 0.953, 0.953, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 56
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "難度設定"
+horizontal_alignment = 1
+
+[node name="ClefHeader" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 28
+text = "1. 譜號"
+
+[node name="TrebleCheck" type="CheckBox" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "高音譜記號"
+
+[node name="BassCheck" type="CheckBox" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "低音譜記號"
+
+[node name="Sep1" type="HSeparator" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="OctaveHeader" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 28
+text = "2. 音域（以中央Do為 0 個八度）"
+
+[node name="OctaveOption" type="OptionButton" parent="Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="RangeLabel" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 24
+text = "高音譜：C4(中央Do) ～ C5"
+
+[node name="Sep2" type="HSeparator" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="DurationHeader" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 28
+text = "3. 音符種類"
+
+[node name="WholeCheck" type="CheckBox" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "全音符"
+
+[node name="HalfCheck" type="CheckBox" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2分音符"
+
+[node name="QuarterCheck" type="CheckBox" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "4分音符"
+
+[node name="Spacer" type="Control" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HintLabel" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.878, 0.353, 0.353, 1)
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "儲存並返回"
